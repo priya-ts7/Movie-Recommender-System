@@ -8,23 +8,18 @@ class EvaluationData:
         
         self.rankings = popularityRankings
         
-        #Build a full training set for evaluating overall properties
         self.fullTrainSet = data.build_full_trainset()
         self.fullAntiTestSet = self.fullTrainSet.build_anti_testset()
         
-        #Build a 75/25 train/test split for measuring accuracy
         self.trainSet, self.testSet = train_test_split(data, test_size=.25, random_state=1)
         
-        #Build a "leave one out" train/test split for evaluating top-N recommenders
-        #And build an anti-test-set for building predictions
         LOOCV = LeaveOneOut(n_splits=1, random_state=1)
         for train, test in LOOCV.split(data):
             self.LOOCVTrain = train
             self.LOOCVTest = test
             
         self.LOOCVAntiTestSet = self.LOOCVTrain.build_anti_testset()
-        
-        #Compute similarty matrix between items so we can measure diversity
+       
         sim_options = {'name': 'cosine', 'user_based': False}
         self.simsAlgo = KNNBaseline(sim_options=sim_options)
         self.simsAlgo.fit(self.fullTrainSet)
