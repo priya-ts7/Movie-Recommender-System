@@ -66,16 +66,16 @@ class RecommenderMetrics:
 
                 total += 1
 
-        # Compute overall precision
+        
         return hits/total
 
     def RatingHitRate(topNPredicted, leftOutPredictions):
         hits = defaultdict(float)
         total = defaultdict(float)
 
-        # For each left-out rating
+      
         for userID, leftOutMovieID, actualRating, estimatedRating, _ in leftOutPredictions:
-            # Is it in the predicted top N for this user?
+            
             hit = False
             for movieID, predictedRating in topNPredicted[int(userID)]:
                 if (int(leftOutMovieID) == movieID):
@@ -86,16 +86,16 @@ class RecommenderMetrics:
 
             total[actualRating] += 1
 
-        # Compute overall precision
+        
         for rating in sorted(hits.keys()):
             print (rating, hits[rating] / total[rating])
 
     def AverageReciprocalHitRank(topNPredicted, leftOutPredictions):
         summation = 0
         total = 0
-        # For each left-out rating
+        
         for userID, leftOutMovieID, actualRating, estimatedRating, _ in leftOutPredictions:
-            # Is it in the predicted top N for this user?
+            
             hitRank = 0
             rank = 0
             for movieID, predictedRating in topNPredicted[int(userID)]:
@@ -110,7 +110,7 @@ class RecommenderMetrics:
 
         return summation / total
 
-    # What percentage of users have at least one "good" recommendation
+    
     def UserCoverage(topNPredicted, numUsers, ratingThreshold=0):
         hits = 0
         for userID in topNPredicted.keys():
